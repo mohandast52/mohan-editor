@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Router from 'next/router';
 import { Layout } from 'antd';
 import Editor from './Editor'
 import FileList from './Directory'
@@ -6,7 +7,7 @@ import NavBar from './helpers';
 import { parseFiles } from './helpers/util-functions';
 import { Container, NavbarContainer } from './styles';
 
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 let timer = null;
 export default class Index extends Component {
@@ -15,17 +16,21 @@ export default class Index extends Component {
     this.state = {
       fileList: [],
       tabList: [],
-      defaultSelectedFiles: '',
       activeTab: null,
     }
   }
 
   componentDidMount() {
+    /* check if the user is logged-in */
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      Router.push('/');
+      return;
+    }
+
     const value = localStorage.getItem('files');
-    const selectedKeys = localStorage.getItem('selectedFiles');
     this.setState({
       fileList: value ? JSON.parse(value) : [],
-      defaultSelectedFiles: selectedKeys
     });
   }
 
@@ -42,7 +47,6 @@ export default class Index extends Component {
     const { fileList, tabList } = this.state;
     const { node } = event;
     const { key, isLeaf } = node;
-    // localStorage.setItem('selectedFiles', key);
 
     /* should be leaf node */
     if (!isLeaf) return;
@@ -53,9 +57,6 @@ export default class Index extends Component {
       return;
     }
 
-    // console.log(key);
-    // console.log(tabList);
-
     clearTimeout(timer);
     if (event.nativeEvent.detail === 1) {
       timer = setTimeout(() => {
@@ -65,7 +66,6 @@ export default class Index extends Component {
         });
       }, 200)
     } else if (event.nativeEvent.detail === 2) {
-      console.log('double');
       this.setState({
         tabList: [...tabList, ...fileList.filter((file) => file.key === key)],
         activeTab: key,
@@ -82,7 +82,7 @@ export default class Index extends Component {
   }
 
   render() {
-    const { fileList, tabList, activeTab, defaultSelectedFiles } = this.state;
+    const { fileList, tabList, activeTab } = this.state;
 
     return (
       <Container>
@@ -95,7 +95,6 @@ export default class Index extends Component {
             <Sider width={300} className="site-layout-background">
               <FileList
                 paths={fileList.map(({ key }) => key)}
-                defaultSelectedFiles={defaultSelectedFiles}
                 onFileChange={this.onFileChange}
               />
             </Sider>

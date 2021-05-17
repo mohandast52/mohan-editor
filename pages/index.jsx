@@ -1,10 +1,9 @@
-import Editor from 'components';
+import Login from 'components/login';
 
-export default Editor;
+export default Login;
 /**
 
 - Google auth
-- on logout => redirect to login page again.
 - Jest testing
 - directory persistent
 - only CSS, JS, TSX files to be added with monaco theme support.
@@ -17,5 +16,6 @@ export default Editor;
 - add to vercel for deployment
 - double click file to new tab
 - closable tabs
+- on logout => redirect to login page again.
 
  */

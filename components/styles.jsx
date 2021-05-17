@@ -27,6 +27,9 @@ export const Container = styled.div`
     padding: 24px;
     margin: 0px;
     min-height: 280px;
+    .ant-spin-nested-loading {
+      height: 800px;
+    }
   }
 
   .ant-tabs-tab-active {
@@ -46,11 +49,6 @@ export const NavbarContainer = styled(Header)`
     letter-spacing: 2px;
     word-spacing: 12px;
     text-shadow: -1px 1px 0px #46444447;
-
-    &::after{
-      /* content: "Mohan's"; */
-      /* position: absolute; */
-    }
   }
   .actions {
     display: flex;
@@ -67,5 +65,21 @@ export const EmptyMessage = styled.div`
   .ant-alert {
     padding: 3rem 4rem;
     font-size: 1.05rem;
+  }
+`;
+
+export const LoginContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    color: #2A8FF7 !important;
+    border-color: #2A8FF7 !important;
+    > div {
+      line-height: 16px;
+      margin-top: 2px;
+    }
   }
 `;

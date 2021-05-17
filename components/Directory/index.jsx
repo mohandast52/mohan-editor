@@ -62,25 +62,18 @@ const GET_TREE_OBJECT = (values) => {
  * @param {Function} onFileChange 
  * @returns {Component}
  */
-const FileList = ({ paths, onFileChange, defaultSelectedFiles }) => {
+const FileList = ({ paths, onFileChange }) => {
   const treeData = GET_TREE_OBJECT(paths);
-  // const files = (defaultSelectedFiles || '').split("/");
 
   const onSelect = (_keys, event) => {
     onFileChange(event);
   };
-
-
-  // console.log(treeData);
-  // console.log(files);
-  console.log(defaultSelectedFiles);
 
   return (
     <DirectoryTree
       defaultExpandAll
       onSelect={onSelect}
       treeData={treeData}
-      // defaultSelectedKeys={files}
       defaultExpandAll
     />
   );

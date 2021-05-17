@@ -1,10 +1,12 @@
 import React from 'react'
+import Router from 'next/router'
 import { Button } from 'antd';
 import { PoweroffOutlined } from '@ant-design/icons';
 
 const NavBar = ({ onUpload }) => {
   const handleLogout = () => {
-
+    localStorage.removeItem('accessToken');
+    Router.push('/');
   }
 
   return (
