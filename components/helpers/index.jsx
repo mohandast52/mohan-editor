@@ -1,10 +1,15 @@
 import React from 'react'
 import { Button } from 'antd';
+import { PoweroffOutlined } from '@ant-design/icons';
 
 const NavBar = ({ onUpload }) => {
+  const handleLogout = () => {
+
+  }
+
   return (
     <>
-      <div className="logo" />
+      <div className="logo">Mohan's Editor</div>
       <div className="actions">
         <input
           type="file"
@@ -16,13 +21,18 @@ const NavBar = ({ onUpload }) => {
         />
 
         <Button
+          ghost
           type="primary"
           onClick={() => document.getElementById('filepicker').click()}
         >
           Upload Directory
         </Button>
 
-        <Button type="primary">Sign Out</Button>
+        <Button
+          danger
+          icon={<PoweroffOutlined />}
+          onClick={handleLogout}
+        />
       </div>
     </>
   )

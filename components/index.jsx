@@ -1,21 +1,22 @@
 import React, { Component } from 'react'
-import { Layout, Button } from 'antd';
+import { Layout } from 'antd';
 import Editor from './Editor'
 import FileList from './Directory'
 import NavBar from './helpers';
 import { parseFiles } from './helpers/util-functions';
-import { Container } from './styles';
+import { Container, NavbarContainer } from './styles';
 
 const { Header, Content, Sider } = Layout;
 
+let timer = null;
 export default class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabList: [],
       fileList: [],
-      defaultSelectedFiles: [],
-      currentKey: null,
+      tabList: [],
+      defaultSelectedFiles: '',
+      activeTab: null,
     }
   }
 
@@ -38,33 +39,57 @@ export default class Index extends Component {
   }
 
   onFileChange = (event) => {
-    const { fileList } = this.state;
+    const { fileList, tabList } = this.state;
     const { node } = event;
     const { key, isLeaf } = node;
+    // localStorage.setItem('selectedFiles', key);
 
-    if (isLeaf) {
+    /* should be leaf node */
+    if (!isLeaf) return;
+
+    /* if tabList contains the key => already opened, just set the current-tab*/
+    if (tabList.find((file) => file.key === key)) {
+      this.setState({ activeTab: key });
+      return;
+    }
+
+    // console.log(key);
+    // console.log(tabList);
+
+    clearTimeout(timer);
+    if (event.nativeEvent.detail === 1) {
+      timer = setTimeout(() => {
+        this.setState({
+          tabList: fileList.filter((file) => file.key === key),
+          activeTab: key,
+        });
+      }, 200)
+    } else if (event.nativeEvent.detail === 2) {
+      console.log('double');
       this.setState({
-        tabList: fileList.filter((file) => file.key === key),
-        defaultSelectedFiles: [key],
+        tabList: [...tabList, ...fileList.filter((file) => file.key === key)],
+        activeTab: key,
       });
-      localStorage.setItem('selectedFiles', JSON.stringify(key));
-      // defaultSelectedKeys
     }
   }
 
   onTabChange = (key) => {
-    this.setState({ currentKey: key })
+    this.setState({ activeTab: key })
+  }
+
+  updateTabDetails = (values) => {
+    this.setState(values);
   }
 
   render() {
-    const { fileList, tabList, defaultSelectedFiles } = this.state;
+    const { fileList, tabList, activeTab, defaultSelectedFiles } = this.state;
 
     return (
       <Container>
         <Layout>
-          <Header className="header">
+          <NavbarContainer className="header">
             <NavBar onUpload={this.onUpload} />
-          </Header>
+          </NavbarContainer>
 
           <Layout>
             <Sider width={300} className="site-layout-background">
@@ -77,7 +102,12 @@ export default class Index extends Component {
 
             <Layout>
               <Content className="site-layout-background">
-                <Editor tabList={tabList} />
+                <Editor
+                  activeTab={activeTab}
+                  tabList={tabList}
+                  onTabChange={this.onTabChange}
+                  updateTabDetails={this.updateTabDetails}
+                />
               </Content>
             </Layout>
           </Layout>

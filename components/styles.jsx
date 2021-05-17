@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { Layout } from 'antd';
+
+const { Header } = Layout;
 
 export const Container = styled.div`
   .header {
@@ -25,6 +28,34 @@ export const Container = styled.div`
     margin: 0px;
     min-height: 280px;
   }
+
+  .ant-tabs-tab-active {
+    border-color: #2A8FF7 !important;
+  }
+`;
+
+export const NavbarContainer = styled(Header)`
+  background: #FFF !important;
+  box-shadow: 0 2px 8px #f0f1f2;
+  max-width: 100%;
+  position: relative;
+  z-index: 10;
+  .logo {
+    position: relative;
+    font-size: 22px;
+    letter-spacing: 2px;
+    word-spacing: 12px;
+    text-shadow: -1px 1px 0px #46444447;
+
+    &::after{
+      /* content: "Mohan's"; */
+      /* position: absolute; */
+    }
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 export const EmptyMessage = styled.div`
@@ -33,4 +64,8 @@ export const EmptyMessage = styled.div`
   justify-content: center;
   height: 50%;
   font-size: 20px;
+  .ant-alert {
+    padding: 3rem 4rem;
+    font-size: 1.05rem;
+  }
 `;

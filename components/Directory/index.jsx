@@ -57,24 +57,31 @@ const GET_TREE_OBJECT = (values) => {
 }
 
 /**
- * 
+ * -----------------------------------------------------------------
  * @param {Object} paths 
  * @param {Function} onFileChange 
  * @returns {Component}
  */
 const FileList = ({ paths, onFileChange, defaultSelectedFiles }) => {
+  const treeData = GET_TREE_OBJECT(paths);
+  // const files = (defaultSelectedFiles || '').split("/");
+
   const onSelect = (_keys, event) => {
     onFileChange(event);
   };
 
-  // console.log(GET_TREE_OBJECT(paths));
+
+  // console.log(treeData);
+  // console.log(files);
+  console.log(defaultSelectedFiles);
 
   return (
     <DirectoryTree
       defaultExpandAll
       onSelect={onSelect}
-      treeData={GET_TREE_OBJECT(paths)}
-      defaultSelectedKeys={defaultSelectedFiles}
+      treeData={treeData}
+      // defaultSelectedKeys={files}
+      defaultExpandAll
     />
   );
 };
