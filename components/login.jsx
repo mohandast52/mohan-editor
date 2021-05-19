@@ -4,9 +4,8 @@ import Router from 'next/router'
 import GoogleLogin from 'react-google-login'
 import { LoginContainer } from './styles';
 
-/**
- * TODO: move clientId to .env
- */
+const KEY = (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID).toString();
+
 export default class App extends Component {
   onSuccess = (response) => {
     const { accessToken, profileObj } = response;
@@ -23,7 +22,7 @@ export default class App extends Component {
     return (
       <LoginContainer>
         <GoogleLogin
-          clientId="773557108202-vfrt5mkokdv04u4nos0gst1cdsi0gp11.apps.googleusercontent.com"
+          clientId={KEY}
           buttonText="Login to Mohan's Editor"
           onSuccess={this.onSuccess}
           onFailure={this.onFailure}

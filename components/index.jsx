@@ -14,6 +14,7 @@ export default class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedDir: [], /* directories which are opened */
       fileList: [],
       tabList: [],
       activeTab: null,
@@ -29,11 +30,19 @@ export default class Index extends Component {
     }
 
     const value = localStorage.getItem('files');
+    const tempFiles = localStorage.getItem('expandedFiles');
+    const tempTabList = localStorage.getItem('tabList');
+    const tempActiveTab = localStorage.getItem('activeTab');
+
     this.setState({
       fileList: value ? JSON.parse(value) : [],
+      selectedDir: tempFiles ? JSON.parse(tempFiles) : [],
+      tabList: tempTabList ? JSON.parse(tempTabList) : [],
+      activeTab: tempActiveTab ? tempActiveTab : null,
     });
   }
 
+  /* ----------- files ----------- */
   onUpload = async (event) => {
     const { files: eventFiles } = event.target;
     const files = [...eventFiles];
@@ -43,7 +52,12 @@ export default class Index extends Component {
     localStorage.setItem('files', JSON.stringify(values));
   }
 
-  onFileChange = (event) => {
+  onExpand = (keys) => {
+    this.setState({ selectedDir: keys });
+    localStorage.setItem('expandedFiles', JSON.stringify(keys));
+  }
+
+  onFileChange = (_keys, event) => {
     const { fileList, tabList } = this.state;
     const { node } = event;
     const { key, isLeaf } = node;
@@ -63,16 +77,23 @@ export default class Index extends Component {
         this.setState({
           tabList: fileList.filter((file) => file.key === key),
           activeTab: key,
-        });
+        }, this.afterFileChange);
       }, 200)
     } else if (event.nativeEvent.detail === 2) {
       this.setState({
         tabList: [...tabList, ...fileList.filter((file) => file.key === key)],
         activeTab: key,
-      });
+      }, this.afterFileChange);
     }
   }
 
+  afterFileChange = () => {
+    const { tabList, activeTab } = this.state;
+    localStorage.setItem('tabList', JSON.stringify(tabList));
+    localStorage.setItem('activeTab', activeTab);
+  }
+
+  /* ----------- tab/editor functions ----------- */
   onTabChange = (key) => {
     this.setState({ activeTab: key })
   }
@@ -81,8 +102,9 @@ export default class Index extends Component {
     this.setState(values);
   }
 
+  /* ----------- render ----------- */
   render() {
-    const { fileList, tabList, activeTab } = this.state;
+    const { selectedDir, fileList, tabList, activeTab } = this.state;
 
     return (
       <Container>
@@ -95,6 +117,9 @@ export default class Index extends Component {
             <Sider width={300} className="site-layout-background">
               <FileList
                 paths={fileList.map(({ key }) => key)}
+                selectedDir={selectedDir}
+                activeTab={activeTab}
+                onExpand={this.onExpand}
                 onFileChange={this.onFileChange}
               />
             </Sider>

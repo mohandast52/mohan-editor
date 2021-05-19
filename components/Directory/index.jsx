@@ -62,19 +62,21 @@ const GET_TREE_OBJECT = (values) => {
  * @param {Function} onFileChange 
  * @returns {Component}
  */
-const FileList = ({ paths, onFileChange }) => {
+const FileList = ({ paths, activeTab, onExpand, selectedDir, onFileChange }) => {
   const treeData = GET_TREE_OBJECT(paths);
 
   const onSelect = (_keys, event) => {
-    onFileChange(event);
+    onFileChange(_keys, event);
   };
 
+  console.log([activeTab]);
   return (
     <DirectoryTree
-      defaultExpandAll
-      onSelect={onSelect}
       treeData={treeData}
-      defaultExpandAll
+      expandedKeys={selectedDir}
+      selectedKeys={[activeTab]}
+      onExpand={onExpand}
+      onSelect={onSelect}
     />
   );
 };

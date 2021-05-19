@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Router from 'next/router'
-import { Button } from 'antd';
+import { Switch, Button } from 'antd';
 import { PoweroffOutlined } from '@ant-design/icons';
 
 const NavBar = ({ onUpload }) => {
+  const [isLightMode, setTheme] = useState(true);
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     Router.push('/');
+  }
+
+  const onChange = () => {
+    if (isLightMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    setTheme(!isLightMode);
   }
 
   return (
@@ -34,6 +44,13 @@ const NavBar = ({ onUpload }) => {
           danger
           icon={<PoweroffOutlined />}
           onClick={handleLogout}
+        />
+
+        <Switch
+          checkedChildren="Light"
+          unCheckedChildren="Dark"
+          checked={isLightMode}
+          onChange={onChange}
         />
       </div>
     </>

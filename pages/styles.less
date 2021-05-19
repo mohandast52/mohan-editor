@@ -1,1 +1,7 @@
 @import "~antd/dist/antd.less";
+// @import "~antd/lib/style/themes/default.less";
+
+.dark-mode {
+  filter: invert(1) hue-rotate(180deg);
+  transition: color 300ms, background-color 300ms;
+}
