@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tree } from 'antd';
+import { LANGUAGE_TYPES } from '../helpers/util-functions';
 
 const { DirectoryTree } = Tree;
 
@@ -9,7 +10,8 @@ const { DirectoryTree } = Tree;
  */
 const isValidFile = (currKey) => {
   const temp = currKey.match(/\.[0-9a-z]+$/i);
-  return temp ? [".jsx", ".css", ".js"].includes(currKey.match(/\.[0-9a-z]+$/i)[0]) : false;
+  const extensions = (LANGUAGE_TYPES.map(({ ext }) => ext));
+  return temp ? extensions.includes(currKey.match(/\.[0-9a-z]+$/i)[0]) : false;
 }
 
 /**

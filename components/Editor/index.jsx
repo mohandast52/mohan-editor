@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import dynamic from "next/dynamic";
 import { Tabs, Alert, Spin } from 'antd';
+import { getLanguage } from '../helpers/util-functions';
 import { EmptyMessage } from '../styles';
 
 const { TabPane } = Tabs;
@@ -64,21 +65,23 @@ class Editor extends Component {
         onChange={onTabChange}
         onEdit={this.onEdit}
       >
-        {tabList.map(({ key, code }) => (
-          <TabPane tab={key} key={key}>
-            <Spin spinning={isLoading}>
-              <MonacoEditor
-                width="1000"
-                height="600"
-                language="javascript"
-                theme="vs-light"
-                value={code}
-                options={OPTIONS}
-                editorDidMount={this.editorDidMount}
-              />
-            </Spin>
-          </TabPane>
-        ))}
+        {tabList.map(({ key, code }) => {
+          return (
+            <TabPane tab={key} key={key}>
+              <Spin spinning={isLoading}>
+                <MonacoEditor
+                  width="1000"
+                  height="600"
+                  language={getLanguage(key)}
+                  theme="vs-dark"
+                  value={code}
+                  options={OPTIONS}
+                  editorDidMount={this.editorDidMount}
+                />
+              </Spin>
+            </TabPane>
+          )
+        })}
       </Tabs>
     );
   }

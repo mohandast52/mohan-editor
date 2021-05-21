@@ -22,14 +22,26 @@ module.exports = withSass(
         webpack: (config) => {
           config.plugins.push(
             new MonacoWebpackPlugin({
-              languages: ["javascript"],
+              languages: [
+                "json",
+                "css",
+                "java",
+                "javascript",
+                "html",
+                "java",
+                "python",
+                "scss",
+                "cpp",
+              ],
             })
           );
 
-          config.module.rules.push({
-            test: /\.ttf$/,
-            use: ["file-loader"],
-          });
+          config.module.rules.push(
+            {
+              test: /\.ttf$/,
+              use: ["file-loader"],
+            },
+          );
 
           return config;
         },
