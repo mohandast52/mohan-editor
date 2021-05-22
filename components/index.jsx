@@ -3,7 +3,7 @@ import Router from 'next/router';
 import { Layout } from 'antd';
 import Editor from './Editor'
 import FileList from './Directory'
-import NavBar from './helpers';
+import NavBar from './Navbar';
 import { parseFiles } from './helpers/util-functions';
 import { Container, NavbarContainer } from './styles';
 

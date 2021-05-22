@@ -49,10 +49,14 @@ class Editor extends Component {
     const { isLoading } = this.state;
     const { activeTab, tabList, onTabChange } = this.props;
 
-    if (tabList.length === 0) {
+    if ((tabList || []).length === 0) {
       return (
         <EmptyMessage>
-          <Alert message="Please upload directory & select a file to open editor." type="error" />
+          <Alert
+            message="Please upload directory & select a file to open editor."
+            type="error"
+            data-testid="no-files-selected"
+          />
         </EmptyMessage>
       )
     }
@@ -64,6 +68,7 @@ class Editor extends Component {
         activeKey={activeTab}
         onChange={onTabChange}
         onEdit={this.onEdit}
+        data-testid="editor-test-id"
       >
         {tabList.map(({ key, code }) => {
           return (
@@ -73,7 +78,7 @@ class Editor extends Component {
                   width="1000"
                   height="600"
                   language={getLanguage(key)}
-                  theme="vs-dark"
+                  theme="vs-light"
                   value={code}
                   options={OPTIONS}
                   editorDidMount={this.editorDidMount}

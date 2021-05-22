@@ -44,6 +44,7 @@ const NavBar = ({ onUpload }) => {
           danger
           icon={<PoweroffOutlined />}
           onClick={handleLogout}
+          data-testid="test-btn-logout"
         />
 
         <Switch
@@ -51,6 +52,7 @@ const NavBar = ({ onUpload }) => {
           unCheckedChildren="Dark"
           checked={isLightMode}
           onChange={onChange}
+          data-testid="mode-toggle"
         />
       </div>
     </>

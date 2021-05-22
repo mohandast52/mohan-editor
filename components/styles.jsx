@@ -23,6 +23,13 @@ export const Container = styled.div`
     height: calc(100vh - 64px);
   }
 
+  .ant-layout-sider {
+    background: #ffffff;
+    .ant-empty {
+      margin-top: 48px;
+    }
+  }
+
   .ant-layout-content.site-layout-background {
     padding: 24px;
     margin: 0px;

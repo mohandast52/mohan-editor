@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tree } from 'antd';
+import { Empty, Tree } from 'antd';
 import { LANGUAGE_TYPES } from '../helpers/util-functions';
 
 const { DirectoryTree } = Tree;
@@ -71,9 +71,19 @@ const FileList = ({ paths, activeTab, onExpand, selectedDir, onFileChange }) => 
     onFileChange(_keys, event);
   };
 
-  console.log([activeTab]);
+  if ((paths || []).length === 0) {
+    return (
+      <Empty
+        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+        description="No files uploaded!"
+        data-testid="empty-data"
+      />
+    );
+  }
+
   return (
     <DirectoryTree
+      data-testid="test-directory"
       treeData={treeData}
       expandedKeys={selectedDir}
       selectedKeys={[activeTab]}

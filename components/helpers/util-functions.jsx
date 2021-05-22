@@ -32,13 +32,11 @@ export const parseFiles = (files) => {
 
 export const LANGUAGE_TYPES = [
   { name: 'python', ext: '.py' },
-  { name: 'css', ext: '.css' },
   { name: 'cpp', ext: '.cpp' },
   { name: 'java', ext: '.java' },
   { name: 'jsx', ext: '.jsx' },
   { name: 'javascript', ext: '.js' },
   { name: 'html', ext: '.html' },
-  { name: 'scss', ext: '.scss'},
   { name: 'json', ext: '.json'},
 ];
 

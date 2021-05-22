@@ -24,13 +24,11 @@ module.exports = withSass(
             new MonacoWebpackPlugin({
               languages: [
                 "json",
-                "css",
                 "java",
                 "javascript",
                 "html",
                 "java",
                 "python",
-                "scss",
                 "cpp",
               ],
             })
