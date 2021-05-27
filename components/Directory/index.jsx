@@ -1,5 +1,5 @@
-import React from 'react';
-import { Empty, Tree } from 'antd';
+import React, { useState } from 'react';
+import { Empty, Tree, Menu, Dropdown, Button } from 'antd';
 import { LANGUAGE_TYPES } from '../helpers/util-functions';
 
 const { DirectoryTree } = Tree;
@@ -14,15 +14,32 @@ const isValidFile = (currKey) => {
   return temp ? extensions.includes(currKey.match(/\.[0-9a-z]+$/i)[0]) : false;
 }
 
+
+
 /**
  * 
  * @param {Object} tree 
  * @returns {Array} convert the object to data compatible for tree
  */
-const GENERATE_TREE = (tree) => {
+const GENERATE_TREE = (tree, isMenuVisible, onNodeClick) => {
   const finalTree = [];
   for (const [key, value] of Object.entries(tree)) {
-    const temp = { title: key };
+    const temp = {
+      title: key,
+      // title: (
+      //   <Dropdown overlay={
+      //     <Menu>
+      //       <Menu.Item onClick={onNodeClick}>Open</Menu.Item>
+      //     </Menu>
+      //   }
+      //     placement="bottomLeft"
+      //     trigger={['click']}
+      //     visible={isMenuVisible}
+      //   >
+      //     <span>{key}</span>
+      //   </Dropdown>
+      // )
+    };
 
     if (typeof value === "string") {
       temp.key = value;
@@ -36,7 +53,7 @@ const GENERATE_TREE = (tree) => {
   return finalTree;
 }
 
-const GET_TREE_OBJECT = (values) => {
+const GET_TREE_OBJECT = (values, isMenuVisible, onNodeClick) => {
   let finalTreeObject = {};
   let path = finalTreeObject;
 
@@ -55,7 +72,7 @@ const GET_TREE_OBJECT = (values) => {
     path = finalTreeObject;
   }
 
-  return GENERATE_TREE(finalTreeObject);
+  return GENERATE_TREE(finalTreeObject, isMenuVisible, onNodeClick);
 }
 
 /**
@@ -64,12 +81,32 @@ const GET_TREE_OBJECT = (values) => {
  * @param {Function} onFileChange 
  * @returns {Component}
  */
-const FileList = ({ paths, activeTab, onExpand, selectedDir, onFileChange }) => {
-  const treeData = GET_TREE_OBJECT(paths);
+const FileList = ({ paths, activeTab, onExpand, selectedDir, onFileChange, onOpenClick }) => {
+  const [isMenuVisible, setMenu] = useState(false);
+  const [nodeEvent, setEvent] = useState(null);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
 
   const onSelect = (_keys, event) => {
     onFileChange(_keys, event);
   };
+
+  const onRightClick = (event) => {
+    const { node } = event;
+    const { isLeaf } = node;
+    if (isLeaf) {
+      const { clientX, clientY } = event.event;
+      setPosition({ top: clientY, left: clientX })
+      setMenu(true); 
+      setEvent(event);
+    }
+  }
+
+  const onMenuClick = () => {
+    onOpenClick(nodeEvent);
+    setMenu(false); 
+  }
+
+  const treeData = GET_TREE_OBJECT(paths, isMenuVisible, onMenuClick);
 
   if ((paths || []).length === 0) {
     return (
@@ -81,15 +118,31 @@ const FileList = ({ paths, activeTab, onExpand, selectedDir, onFileChange }) => 
     );
   }
 
+  console.log(position);
+
   return (
-    <DirectoryTree
-      data-testid="test-directory"
-      treeData={treeData}
-      expandedKeys={selectedDir}
-      selectedKeys={[activeTab]}
-      onExpand={onExpand}
-      onSelect={onSelect}
-    />
+    <>
+      <DirectoryTree
+        data-testid="test-directory"
+        treeData={treeData}
+        expandedKeys={selectedDir}
+        selectedKeys={[activeTab]}
+        onExpand={onExpand}
+        onSelect={onSelect}
+        onRightClick={onRightClick}
+      />
+      {
+        isMenuVisible && (
+          <div style={{ position: 'absolute', top: `${position.top - 50}px`, left: position.left }}>
+            <Menu >
+              <Menu.Item onClick={onMenuClick}>
+                Open
+            </Menu.Item>
+            </Menu>
+          </div>
+        )
+      }
+    </>
   );
 };
 

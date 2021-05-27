@@ -87,6 +87,17 @@ export default class Index extends Component {
     }
   }
 
+  onOpenClick = (event) => {
+    const { fileList } = this.state;
+    const { node } = event;
+    const { key } = node;
+
+    this.setState({
+      tabList: fileList.filter((file) => file.key === key),
+      activeTab: key,
+    }, this.afterFileChange);
+  }
+
   afterFileChange = () => {
     const { tabList, activeTab } = this.state;
     localStorage.setItem('tabList', JSON.stringify(tabList));
@@ -121,6 +132,7 @@ export default class Index extends Component {
                 activeTab={activeTab}
                 onExpand={this.onExpand}
                 onFileChange={this.onFileChange}
+                onOpenClick={this.onOpenClick}
               />
             </Sider>
 

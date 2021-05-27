@@ -42,6 +42,20 @@ export const Container = styled.div`
   .ant-tabs-tab-active {
     border-color: #2A8FF7 !important;
   }
+
+  /* .ant-menu */
+  .ant-menu.ant-menu-vertical {   
+    background-color: white;
+    width: 200px;
+    border: 1px solid #90909038;
+    box-shadow: 3px 3px 3px #00000030;
+    .ant-menu-item {
+        background-color: white;
+        z-index: 1;
+        height: 22px;
+        line-height: 22px;
+    }
+    }
 `;
 
 export const NavbarContainer = styled(Header)`
